@@ -47,23 +47,28 @@ class Menu extends Phaser.Scene {
     this.add.image(320, 240, 'taidao');
     keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+    keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 }
     
     update(){
 
-        if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
+        if(Phaser.Input.Keyboard.JustDown(keyLEFT) || Phaser.Input.Keyboard.JustDown(keyA)){
             localStorage.setItem('selectedTime', 60);
             localStorage.setItem('spaceshipSpeed', 3);
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
+        if(Phaser.Input.Keyboard.JustDown(keyRIGHT) || Phaser.Input.Keyboard.JustDown(keyD)){
             localStorage.setItem('selectedTime', 5);
             localStorage.setItem('spaceshipSpeed', 4);
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
+        
     }
 
 }
