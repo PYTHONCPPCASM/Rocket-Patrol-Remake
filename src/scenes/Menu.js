@@ -10,14 +10,12 @@ class Menu extends Phaser.Scene {
 
     constructor(){
         super("menuScene");
-        let tab = 10;
     }
 
     preload(){
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
-        this.load.image('taidao', './assets/taidao.jpeg');
     }
 
     create(){
@@ -34,17 +32,20 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-    this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding,
+    this.add.text(game.config.width / 2, game.config.height / 3 - borderUISize - borderPadding,
          'ROCKET PATROL', menuConfig).setOrigin(0.5);
-    this.add.text(game.config.width / 2, game.config.height / 2, 'Use <-> arrow to move & (F) to fire',
+    this.add.text(game.config.width / 2, game.config.height / 3, 'p1: <-> arrow to move & (F) to fire',
         menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width / 2, game.config.height / 2 - 20, 'p2: A/D to move & (G) to fire',
+        menuConfig).setOrigin(0.5);
+        
     menuConfig.backgroundColor = "#00FF00";
     menuConfig.backgroundColor = '#000';
+    
     this.add.text(game.config.width / 2, game.config.height / 2 + borderUISize + borderPadding,
-         'Press <- for Novice or -> for Expert', menuConfig)
-        .setOrigin(0.5);
+         'Press <-/A for Novice\n or ->/D for Expert', menuConfig).setOrigin(0.5);
+
     //imported artwork
-    this.add.image(320, 240, 'taidao');
     keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);

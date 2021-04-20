@@ -144,7 +144,7 @@ class Play extends Phaser.Scene{
               this.timeLeft = this.add.text(350, borderUISize + borderPadding * 2, runningTime, timeConfig); //decrease
               console.log(runningTime); //output
               //when game is stopped
-              if(runningTime == -1){
+              if(runningTime == 0){
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, '(R) to Restart',
                 scoreConfig).setOrigin(0.5);
@@ -161,11 +161,17 @@ class Play extends Phaser.Scene{
           
           //speed increase after 30s
 
+            localStorage.setItem('s1Speed', 5);
+            localStorage.setItem('s2Speed', 8);
+            localStorage.setItem('s3Speed', 2);
+
           this.speedIncrease = this.time.delayedCall(3000, ()=> {
+
             this.warning = this.add.text(140, 240, 'Speed Change Observed!', scoreConfig);
-            this.ship01.moveSpeed = 5;
-            this.ship02.moveSpeed = 8;
-            this.ship03.moveSpeed = 2;
+            this.ship01.moveSpeed = localStorage.getItem('s1Speed');
+            this.ship02.moveSpeed = localStorage.getItem('s2Speed');
+            this.ship03.moveSpeed = localStorage.getItem('s3Speed');
+            
             this.goAway = this.time.delayedCall(600,
               ()=>{
                 this.warning.destroy();
@@ -241,7 +247,16 @@ class Play extends Phaser.Scene{
         if(rocket.x < ship.x + ship.width &&
            rocket.x + rocket.width > ship.x &&
            rocket.y < ship.y + ship.height &&
-           rocket.height + rocket.y > ship.y){
+           rocket.height + rocket.y > ship.y) {
+            let listOfExplosion = [
+              'sfx_explosion',
+              'explosion1',
+              'explosion2',
+              'explosion3',
+              'explosion4'
+            ];
+            let randomSound = Phaser.Math.Between(0,4);
+            this.sound.play(listOfExplosion[randomSound]);
              return true;
            } else {
              return false;
@@ -262,7 +277,9 @@ class Play extends Phaser.Scene{
         });
 
         this.p1Score += ship.points;
+        
         //displaying the current score
+
         this.scoreLeft.text = this.p1Score;
 
         //check if the score in the local is the highest?
@@ -275,18 +292,8 @@ class Play extends Phaser.Scene{
         //it will always be highest
         
         this.highScore.text = localStorage.getItem('highest');
-
-        let listOfExplosion = [
-          'sfx_explosion',
-          'explosion1',
-          'explosion2',
-          'explosion3',
-          'explosion4'
-        ];
-
-        let randomSound = Phaser.Math.Between(0,4);
-        this.sound.play(listOfExplosion[randomSound]);
-      
+        
+        
         //script update the current time
       }
       //add five second to the currentTime in localStorage
@@ -313,17 +320,17 @@ class Play extends Phaser.Scene{
           }
         );
 
-        this.showAndGone = this.time.delayedCall(400, 
+        this.showAndGone = this.time.delayedCall(400,
           ()=>{
             this.bonus.destroy();
           }
-          );
+        );
 
       }
 
       checkForTwo(){
-        if(this.checkCollision(this.p1Rocket, this.ship03) ) {
-          this.p1Rocket.reset();
+        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+          this.p1Rocket.reset()
           this.shipExplode(this.ship03);
           this.addTime(3);
           this.displayBonus('time+!');
@@ -364,6 +371,5 @@ class Play extends Phaser.Scene{
           this.displayBonus('time+++!');
         }
       }
-     
 
 }
