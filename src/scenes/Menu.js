@@ -64,7 +64,7 @@ class Menu extends Phaser.Scene {
         }
 
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT) || Phaser.Input.Keyboard.JustDown(keyD)){
-            localStorage.setItem('selectedTime', 5);
+            localStorage.setItem('selectedTime', 45);
             localStorage.setItem('spaceshipSpeed', 4);
             this.sound.play('sfx_select');
             this.scene.start('playScene');

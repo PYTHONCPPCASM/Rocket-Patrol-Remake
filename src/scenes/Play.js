@@ -165,7 +165,7 @@ class Play extends Phaser.Scene{
             localStorage.setItem('s2Speed', 8);
             localStorage.setItem('s3Speed', 2);
 
-          this.speedIncrease = this.time.delayedCall(3000, ()=> {
+          this.speedIncrease = this.time.delayedCall(30000, ()=> {
 
             this.warning = this.add.text(140, 240, 'Speed Change Observed!', scoreConfig);
             this.ship01.moveSpeed = localStorage.getItem('s1Speed');
