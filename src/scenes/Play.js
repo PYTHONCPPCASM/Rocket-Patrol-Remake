@@ -40,9 +40,13 @@ class Play extends Phaser.Scene{
         // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
         //put the rocket on screen
 
-        this.p1Rocket = new Rocket(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
-        this.p2Rocket = new Rocket2(this, game.config.width / 3, game.config.height - borderUISize - borderPadding, 'rocket2').setOrigin(0.5, 0);
-        
+        if(localStorage.getItem('single') == 1){
+          console.log('p1Spawned?');
+          this.p1Rocket = new Rocket(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        } else if(localStorage.getItem('single') == 0){
+          this.p1Rocket = new Rocket(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+          this.p2Rocket = new Rocket2(this, game.config.width / 3, game.config.height - borderUISize - borderPadding, 'rocket2').setOrigin(0.5, 0);
+        }
         //put the ships on the screen
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
@@ -55,6 +59,7 @@ class Play extends Phaser.Scene{
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+
         //playing bgm
         let music = this.sound.add('play_bgm');
         this.anims.create({
@@ -181,6 +186,8 @@ class Play extends Phaser.Scene{
     }
 
     update() {
+      let present;
+      let background;
 
       if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
         this.scene.restart();
@@ -191,31 +198,39 @@ class Play extends Phaser.Scene{
         if(!this.gameOver){
 
           this.p1Rocket.update();
-          this.p2Rocket.update();
-          
+
+          if(this.p1Rocket.isFiring){
+            present = '#843605';
+            background = '#F3B141';
+          } else { //not present
+            present = '#000000';
+            background = '#000000';
+          }
+
+          if(localStorage.getItem('single') == false){
+
+            this.p2Rocket.update();
+            if(keyA.isDown && this.p2Rocket.x >= borderUISize + this.p2Rocket.width){
+              this.p2Rocket.x -= this.p2Rocket.moveSpeed;
+            } else if(keyD.isDown && this.p2Rocket.x <= game.config.width - borderUISize - this.p2Rocket.width){
+              this.p2Rocket.x += this.p2Rocket.moveSpeed;
+            }
+
+            if(this.p2Rocket.isFiring){
+              present = '#843605';
+              background = '#F3B141';
+            } else { //not present
+              present = '#000000';
+              background = '#000000';
+            }
+
+          }
           //switch direction after launching
 
           if(keyLEFT.isDown && this.p1Rocket.x >= borderUISize + this.p1Rocket.width){
             this.p1Rocket.x -= this.p1Rocket.moveSpeed;
           } else if(keyRIGHT.isDown && this.p1Rocket.x <= game.config.width - borderUISize - this.p1Rocket.width){
             this.p1Rocket.x += this.p1Rocket.moveSpeed;
-          }
-
-          if(keyA.isDown && this.p2Rocket.x >= borderUISize + this.p2Rocket.width){
-            this.p2Rocket.x -= this.p2Rocket.moveSpeed;
-          } else if(keyD.isDown && this.p2Rocket.x <= game.config.width - borderUISize - this.p2Rocket.width){
-            this.p2Rocket.x += this.p2Rocket.moveSpeed;
-          }
-
-          let present;
-          let background;
-
-          if(this.p1Rocket.isFiring || this.p2Rocket.isFiring){
-            present = '#843605';
-            background = '#F3B141';
-          } else { //not present
-            present = '#000000';
-            background = '#000000';
           }
 
           let scoreConfig = {
@@ -292,8 +307,7 @@ class Play extends Phaser.Scene{
         //it will always be highest
         
         this.highScore.text = localStorage.getItem('highest');
-        
-        
+
         //script update the current time
       }
       //add five second to the currentTime in localStorage
@@ -349,27 +363,30 @@ class Play extends Phaser.Scene{
           this.addTime(1);
           this.displayBonus('time+++!');
         }
-
-        if(this.checkCollision(this.p2Rocket, this.ship03)) {
-          this.p2Rocket.reset();
-          this.shipExplode(this.ship03);
-          this.addTime(3);
-          this.displayBonus('time+!');
+        
+        if(localStorage.getItem('single') == 0){
+          if(this.checkCollision(this.p2Rocket, this.ship03)) {
+            this.p2Rocket.reset();
+            this.shipExplode(this.ship03);
+            this.addTime(3);
+            this.displayBonus('time+!');
+          }
+  
+          if (this.checkCollision(this.p2Rocket, this.ship02)) {
+            this.p2Rocket.reset();
+            this.shipExplode(this.ship02);
+            this.addTime(2);
+            this.displayBonus('time++!');
+          }
+  
+          if (this.checkCollision(this.p2Rocket, this.ship01)) {
+            this.p2Rocket.reset();
+            this.shipExplode(this.ship01);
+            this.addTime(1);
+            this.displayBonus('time+++!');
+          }
         }
-
-        if (this.checkCollision(this.p2Rocket, this.ship02)) {
-          this.p2Rocket.reset();
-          this.shipExplode(this.ship02);
-          this.addTime(2);
-          this.displayBonus('time++!');
-        }
-
-        if (this.checkCollision(this.p2Rocket, this.ship01)) {
-          this.p2Rocket.reset();
-          this.shipExplode(this.ship01);
-          this.addTime(1);
-          this.displayBonus('time+++!');
-        }
+        
       }
 
 }
