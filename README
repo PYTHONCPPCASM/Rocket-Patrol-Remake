@@ -1,9 +1,41 @@
 1. Track a high score that persists across scenes and display it in the UI (5)
+
+  This can be found on the upper of the screen, marked as high.
+
 2. Implement the 'FIRE' UI text from the original game (5)
+  
+  when the rocket is fired, there will be an indicator for the flying of the rocket.
+
 3. Add your own (copyright-free) background music to the Play scene (5)
+
+   the music is added in the play scene, and it is copy right free
+  
 4. Implement the speed increase that happens after 30 seconds in the original game (5)
+
+  after 30 second, the speed of the ship will change.
+
 5. Allow the player to control the Rocket after it's fired (5)
+
+  both of the play will be able to control the rockets after they are fired.
+
 6. Create 4 new explosion SFX and randomize which one plays on impact (10)
+
+  try to hit the rocket multiple times, and the player will hear 4 different explosion fx.
+
 7. Display the time remaining (in seconds) on the screen (10)
+
+  the remaining time will be display on the upper screen, and it counts down.
+
 8. Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
+
+  when hitting different ships, the amount of time added is different, too. there is a small console lable on the lower screen
+  it indicates how much time the player gets when he/she hits a target.
+
 9. Implement simultaneous 2 player mode (30)
+
+  The player(s) can choose whether to play in single mode or two players mode
+  p1 uses <->, p2 uses A/D for movement, p1 uses 'F' to fire, p2 uses 'G' to fire
+
+10. a new cover for the menu page
+
+  a new artwork cover is added for the menu scene, though it is rather a make-shift one.
